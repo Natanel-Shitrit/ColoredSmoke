@@ -83,6 +83,15 @@ public void Event_SmokeDetonate(Event event, const char[] name, bool dontBroadca
     int client = GetClientOfUserId(event.GetInt("userid"));
 
     StartSmokeEffect("explosion_smokegrenade_colored", xyz, client);
+    
+    int index = MaxClients + 1;
+    float xyz2[3];
+    while ((index = FindEntityByClassname(index, "smokegrenade_projectile")) != -1)
+    {
+        GetEntPropVector(index, Prop_Send, "m_vecOrigin", xyz2);
+        if (xyz[0] == xyz2[0] && xyz[1] == xyz2[1] && xyz[2] == xyz2[2])
+            AcceptEntityInput(index, "kill");
+    }
 }
 
 void StartSmokeEffect(const char[] smokeParticle, const float origin[3], int client)
